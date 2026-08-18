@@ -21,8 +21,6 @@ export default async function handler(req, res) {
       { name }
     );
 
-    // Skills acquired: 2-hop traversal from student through completed
-    // courses to the skills those courses teach.
     const skills = await runQuery(
       `MATCH (s:Student {name: $name})-[:COMPLETED]->(:Course)-[:TEACHES]->(sk:Skill)
        RETURN DISTINCT sk.name AS name
@@ -30,20 +28,20 @@ export default async function handler(req, res) {
       { name }
     );
 
-    // Eligible courses: not yet completed, AND every direct prerequisite
-    // has been completed. This "all of these related nodes must satisfy a
-    // condition" check is a pattern comprehension in Cypher — in SQL it
-    // would need a NOT EXISTS subquery counting unmet prerequisites per
-    // candidate course, which gets unwieldy as prerequisite counts vary.
-    const eligible = await runQuery(
-      `MATCH (s:Student {name: $name})
-       MATCH (c:Course)
-       WHERE NOT EXISTS { MATCH (s)-[:COMPLETED]->(c) }
-         AND ALL(req IN [(c)-[:REQUIRES]->(r) | r] WHERE EXISTS { MATCH (s)-[:COMPLETED]->(req) })
-       RETURN c.code AS code, c.title AS title, c.credits AS credits
-       ORDER BY c.code`,
-      { name }
+    const allCourses = await runQuery(
+      `MATCH (c:Course)
+       OPTIONAL MATCH (c)-[:REQUIRES]->(req:Course)
+       RETURN c.code AS code, c.title AS title, c.credits AS credits,
+              collect(req.code) AS prereqCodes`,
+      {}
     );
+
+    const completedCodes = new Set(completed.map((c) => c.code));
+    const eligible = allCourses
+      .filter((c) => !completedCodes.has(c.code))
+      .filter((c) => c.prereqCodes.every((p) => p == null || completedCodes.has(p)))
+      .map(({ code, title, credits }) => ({ code, title, credits }))
+      .sort((a, b) => a.code.localeCompare(b.code));
 
     res.status(200).json({ student: studentRows[0], completed, skills, eligible });
   } catch (err) {
