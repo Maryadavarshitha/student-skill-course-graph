@@ -17,7 +17,7 @@ export default function Home() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+     const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`, { cache: "no-store" }); 
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Search failed");
       setResults(data.results);
@@ -34,7 +34,7 @@ export default function Home() {
     setStudentLoading(true);
     setStudentError(null);
     try {
-      const res = await fetch(`/api/student/${encodeURIComponent(name)}`);
+      const res = await fetch(`/api/student/${encodeURIComponent(name)}`, { cache: "no-store" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to load student");
       setStudentData(data);
