@@ -147,12 +147,13 @@ message instead of crashing, and the UI surfaces that message inline.
 `pages/api/health.js` exposes a simple connectivity check.
 
 ## Screenshots
+<img width="1878" height="890" alt="student-eligibility png" src="https://github.com/user-attachments/assets/143c2413-c753-4f9f-a905-0288edb12bc5" />
+<img width="1790" height="623" alt="homepage-search png" src="https://github.com/user-attachments/assets/54de396c-d3d9-4771-87d4-33b76b0a32fe" />
+<img width="1617" height="665" alt="course-detail png" src="https://github.com/user-attachments/assets/cfe5998b-eedc-4a5b-87c7-09b52cebd7e5" />
+<img width="1811" height="683" alt="connect-courses png" src="https://github.com/user-attachments/assets/9fefdfa0-af58-4a85-870d-38224908004a" />
 
-_Add screenshots of the course search page, a course detail page, the
-student eligibility panel, and the course path-finder here before
-submitting._
 
 ## Demo
-
-- Hosted app: `<add your Vercel URL here>`
+-https://drive.google.com/file/d/1LXQ77gqo8iEHVk3zCj-8ty41n5NBgXE1/view?usp=sharing
+-  Hosted app: `<add your Vercel URL here>`
 - Screen recording: `<add link here>`
